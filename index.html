@@ -110,6 +110,7 @@
   .hero-cta .btn-primary .sub { font-size: 11px; font-weight: 400; opacity: .85; }
   .hero-meta { display: flex; gap: 22px; align-items: center; font-size: 13px; color: var(--ink-mute); }
   .hero-meta .star { color: var(--amber); margin-right: 4px; }
+  .hero-img-mobile { display: none; }
 
   /* hero visual */
   .hero-visual { position: relative; height: 540px; }
@@ -359,7 +360,18 @@
     /* HERO */
     .hero-grid { grid-template-columns: 1fr; }
     .hero-visual { display: none; }
-    .hero { padding: 40px 0 60px; }
+    .hero { padding: 40px 0 0; }
+    .hero-img-mobile { display: block; width: 100%; margin-top: 36px; border-radius: 16px; }
+
+    /* SECTION SPACING */
+    .problem { padding: 60px 0 40px; }
+    .about { padding: 60px 0; }
+    .flow { padding: 60px 0; }
+    .features { padding: 60px 0; }
+    .persona { padding: 60px 0; }
+    .monitor { padding: 60px 0; }
+    .faq { padding: 40px 0 60px; }
+    .final { padding: 60px 0; }
 
     /* ABOUT */
     .about-inner { grid-template-columns: 1fr; gap: 40px; }
@@ -376,6 +388,9 @@
 
     /* MONITOR */
     .monitor-inner { grid-template-columns: 1fr; }
+    .monitor-card h3 { font-size: 26px; }
+    .monitor-card .free-badge { font-size: 11px; padding: 5px 12px; }
+    .section-title { font-size: clamp(24px, 6vw, 44px); }
 
     /* FAQ */
     .faq-grid { grid-template-columns: 1fr; }
@@ -441,6 +456,7 @@
       <div class="hero-meta">
         <span><span class="star">★</span>フィードバック提供と引き換えに、永久無料でご利用いただけます。</span>
       </div>
+      <img class="hero-img-mobile" src="assets/hero_visual.png" alt="BuddyFlow AI自動ブログ運用">
     </div>
     <div class="hero-visual">
       <div class="mock mock-1">
@@ -552,35 +568,35 @@
 
     <div class="steps">
       <div class="step">
-        <div class="num-ic"><img src="assets/set1/icon_025.png" alt=""></div>
+        <div class="num-ic"><img src="assets/step1.png" alt=""></div>
         <div class="step-num">STEP 1</div>
         <h3>骨組み立案</h3>
         <p class="step-sub">AI編集会議</p>
         <p>検索意図・競合・構成を分析し、記事の設計図を作成します。</p>
       </div>
       <div class="step">
-        <div class="num-ic"><img src="assets/set1/icon_026.png" alt=""></div>
+        <div class="num-ic"><img src="assets/step2.png" alt=""></div>
         <div class="step-num">STEP 2</div>
         <h3>見出しごと個別執筆</h3>
         <p class="step-sub"></p>
         <p>長い見出しをAIが個別に収集、情報を網羅的に生成します。</p>
       </div>
       <div class="step">
-        <div class="num-ic"><img src="assets/set1/icon_027.png" alt=""></div>
+        <div class="num-ic"><img src="assets/step3.png" alt=""></div>
         <div class="step-num">STEP 3</div>
         <h3>結合</h3>
         <p class="step-sub"></p>
         <p>各パートをつなぎ、一つの記事として自然に結合します。</p>
       </div>
       <div class="step">
-        <div class="num-ic"><img src="assets/set1/icon_014.png" alt=""></div>
+        <div class="num-ic"><img src="assets/step4.png" alt=""></div>
         <div class="step-num">STEP 4</div>
         <h3>校閲・トーン修正</h3>
         <p class="step-sub"></p>
         <p>誤字脱字のチェックや、読みやすさ・トーンを最適化します。</p>
       </div>
       <div class="step">
-        <div class="num-ic"><img src="assets/set1/icon_028.png" alt=""></div>
+        <div class="num-ic"><img src="assets/step5.png" alt=""></div>
         <div class="step-num">STEP 5</div>
         <h3>装飾・WordPress入稿</h3>
         <p class="step-sub"></p>
