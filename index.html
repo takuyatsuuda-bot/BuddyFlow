@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BuddyFlow — 書かなくていい。それでも、ブログは育つ。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1f2a23;
+    --ink-soft: #4a5650;
+    --ink-mute: #7a847e;
+    --line: #e3e6df;
+    --line-soft: #eef0ea;
+    --paper: #fafaf5;
+    --paper-2: #f3f4ec;
+    --green: #2f7d4f;
+    --green-deep: #235e3b;
+    --green-soft: #d8e7dc;
+    --green-tint: #eaf2e8;
+    --teal: #4d9b8e;
+    --amber: #d8a23a;
+    --max: 1200px;
+  }
+  *,*::before,*::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Noto Sans JP", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1,h2,h3,h4 { font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif; letter-spacing: -0.01em; line-height: 1.25; margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+  .mono { font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-mute); }
+
+  /* ========== NAV ========== */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250,250,245,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: "Zen Kaku Gothic New"; font-weight: 900; font-size: 20px; letter-spacing: -0.02em; }
+  .logo-mark {
+    width: 30px; height: 30px;
+    background: url("assets/set2/shape_004.png") center/contain no-repeat;
+    position: relative;
+  }
+  .logo-mark::after {
+    content: ""; position: absolute; inset: 0;
+    background: url("assets/set1/icon_010.png") center/60% no-repeat;
+  }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--ink-soft); font-weight: 500; }
+  .nav-links a:hover { color: var(--green); }
+  .nav-cta { display: flex; gap: 12px; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 44px; padding: 0 22px;
+    border-radius: 999px;
+    font-weight: 700; font-size: 14px;
+    transition: transform .15s ease, box-shadow .15s ease;
+    cursor: pointer; border: 0;
+    font-family: inherit;
+  }
+  .btn-primary { background: var(--green); color: #fff; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px -10px rgba(47,125,79,.5); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 14px 28px -10px rgba(47,125,79,.55); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+  .btn .arrow { width: 18px; height: 18px; background: url("assets/set1/icon_003.png") center/contain no-repeat; filter: brightness(0) invert(1); }
+  .btn-ghost .arrow { filter: none; }
+
+  /* ========== HERO ========== */
+  .hero { position: relative; padding: 60px 0 100px; overflow: hidden; }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  }
+  .hero-bg .blob1 { position: absolute; top: -60px; right: -120px; width: 620px; height: 620px;
+    background: url("assets/set2/shape_002.png") center/contain no-repeat; opacity: .85; }
+  .hero-bg .blob2 { position: absolute; bottom: -120px; left: -180px; width: 520px; height: 520px;
+    background: url("assets/set2/shape_001.png") center/contain no-repeat; opacity: .7; }
+  .hero-bg .dot1 { position: absolute; top: 80px; left: 40%; width: 220px; height: 220px;
+    background: url("assets/set2/shape_017.png") center/contain no-repeat; opacity: .55; }
+  .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: center; padding-top: 40px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px; border-radius: 999px;
+    background: #fff; border: 1px solid var(--green-soft); font-size: 12px; color: var(--green-deep); font-weight: 700;
+    box-shadow: 0 1px 0 rgba(0,0,0,.02);
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+  .hero h1 {
+    font-size: clamp(40px, 5.4vw, 68px);
+    font-weight: 900;
+    margin: 22px 0 22px;
+  }
+  .hero h1 .accent { color: var(--green); position: relative; white-space: nowrap; }
+  .hero h1 .accent::after {
+    content: ""; position: absolute; left: -4%; right: -4%; bottom: 4%; height: 14%;
+    background: var(--green-tint); z-index: -1; border-radius: 4px;
+  }
+  .hero p.lead { font-size: 18px; color: var(--ink-soft); max-width: 540px; }
+  .hero-cta { display: flex; gap: 14px; margin: 34px 0 28px; flex-wrap: wrap; }
+  .hero-cta .btn-primary { flex-direction: column; height: auto; padding: 12px 24px; gap: 2px; }
+  .hero-cta .btn-primary .sub { font-size: 11px; font-weight: 400; opacity: .85; }
+  .hero-meta { display: flex; gap: 22px; align-items: center; font-size: 13px; color: var(--ink-mute); }
+  .hero-meta .star { color: var(--amber); margin-right: 4px; }
+
+  /* hero visual */
+  .hero-visual { position: relative; height: 540px; }
+  .mock {
+    position: absolute;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 30px 60px -28px rgba(31,42,35,.22), 0 4px 10px -4px rgba(31,42,35,.06);
+    overflow: hidden;
+  }
+  .mock-1 { top: 20px; left: 0; width: 380px; padding: 18px; }
+  .mock-2 { top: 200px; right: -10px; width: 340px; padding: 18px; transform: rotate(2deg); }
+  .mock-3 { bottom: 0; left: 80px; width: 300px; padding: 16px 18px; transform: rotate(-2deg); }
+  .mock-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .mock-head .title { font-weight: 700; font-size: 13px; }
+  .mock-head .badge { font-size: 11px; padding: 3px 8px; border-radius: 999px; background: var(--green-tint); color: var(--green-deep); font-weight: 700; }
+  .task-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--line-soft); font-size: 13px; }
+  .task-row:last-child { border-bottom: 0; }
+  .task-row .check-ic { width: 18px; height: 18px; background: url("assets/set1/icon_010.png") center/contain no-repeat; flex: 0 0 18px; }
+  .task-row .check-ic.todo { background: url("assets/set2/shape_018.png") center/contain no-repeat; opacity: .6; }
+  .task-row .tag-ai { margin-left: auto; font-size: 10px; padding: 2px 7px; border-radius: 999px; background: var(--green-tint); color: var(--green-deep); font-weight: 700; }
+  .mock-2 .chart { height: 110px; background: url("assets/set1/icon_041.png") center/contain no-repeat; }
+  .mock-2 .legend { display: flex; gap: 10px; font-size: 11px; color: var(--ink-mute); margin-top: 6px; }
+  .mock-2 .legend span::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--green); margin-right: 5px; vertical-align: 0; }
+  .mock-2 .legend span:nth-child(2)::before { background: var(--teal); }
+  .mock-2 .legend span:nth-child(3)::before { background: var(--amber); }
+  .mock-3 .buddy-msg { font-size: 12px; color: var(--ink-soft); margin-top: 8px; background: var(--green-tint); border-radius: 10px; padding: 10px 12px; }
+  .mock-3 .buddy-label { font-size: 11px; font-weight: 700; color: var(--green); margin-bottom: 4px; }
+
+  /* ========== SECTION COMMON ========== */
+  .section-eyebrow { font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: .14em; color: var(--green); font-weight: 500; text-transform: uppercase; }
+  .section-title { font-size: clamp(30px, 3.6vw, 44px); font-weight: 900; margin: 14px 0 14px; max-width: 760px; }
+  .section-sub { color: var(--ink-soft); max-width: 640px; font-size: 16px; }
+
+  /* ========== PROBLEM ========== */
+  .problem { padding: 110px 0 80px; position: relative; }
+  .pain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 56px; }
+  .pain {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px 26px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pain .scribble { width: 56px; height: 56px; background: url("assets/set1/icon_015.png") center/contain no-repeat; margin-bottom: 16px; opacity: .8; }
+  .pain h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+  .pain p { color: var(--ink-soft); font-size: 14px; }
+  .pain .num { position: absolute; top: 18px; right: 22px; font-family: "JetBrains Mono"; font-size: 12px; color: var(--ink-mute); }
+
+  /* ========== ABOUT ========== */
+  .about { padding: 100px 0; background: var(--paper-2); position: relative; overflow: hidden; }
+  .about::before {
+    content: ""; position: absolute; top: -120px; right: -120px; width: 480px; height: 480px;
+    background: url("assets/set2/shape_005.png") center/contain no-repeat; opacity: .8;
+  }
+  .about-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .about-text p { color: var(--ink-soft); font-size: 16px; margin: 20px 0 0; }
+  .about-flow { display: flex; align-items: center; justify-content: center; gap: 0; }
+  .af-step {
+    text-align: center;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px 20px;
+    min-width: 120px;
+  }
+  .af-step .ic { width: 52px; height: 52px; margin: 0 auto 10px; background-size: contain; background-position: center; background-repeat: no-repeat; }
+  .af-step .ic-person { background-image: url("assets/set1/icon_025.png"); }
+  .af-step .ic-buddy { background-image: url("assets/set1/icon_022.png"); }
+  .af-step .ic-blog { background-image: url("assets/set1/icon_036.png"); }
+  .af-step h4 { font-size: 13px; font-weight: 700; }
+  .af-step p { font-size: 11px; color: var(--ink-mute); margin: 4px 0 0; }
+  .af-arrow { font-size: 22px; color: var(--green); margin: 0 12px; flex: 0 0 auto; }
+  .af-step.highlight { background: var(--green); color: #fff; border-color: var(--green); }
+  .af-step.highlight h4 { color: #fff; }
+  .af-step.highlight p { color: rgba(255,255,255,.75); }
+
+  /* ========== FLOW (5 steps) ========== */
+  .flow { padding: 110px 0 100px; position: relative; }
+  .flow .head { display: flex; justify-content: space-between; align-items: end; gap: 40px; margin-bottom: 64px; flex-wrap: wrap; }
+  .flow .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; position: relative; }
+  .flow .steps::before {
+    content: ""; position: absolute; left: 5%; right: 5%; top: 36px; height: 2px;
+    background: repeating-linear-gradient(90deg, var(--green-soft) 0 8px, transparent 8px 16px);
+    z-index: 0;
+  }
+  .step { position: relative; z-index: 1; }
+  .step .num-ic { width: 72px; height: 72px; background: #fff; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; margin-bottom: 18px; }
+  .step .num-ic img { width: 50px; height: 50px; }
+  .step .step-num { display: inline-block; background: var(--green); color: #fff; font-family: "JetBrains Mono"; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; }
+  .step h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .step .step-sub { font-size: 11px; font-weight: 500; color: var(--green); }
+  .step p { color: var(--ink-soft); font-size: 13px; }
+
+  /* ========== FEATURES (できること) ========== */
+  .features { padding: 100px 0; background: var(--paper-2); position: relative; overflow: hidden; }
+  .features::after {
+    content: ""; position: absolute; bottom: -160px; left: -160px; width: 520px; height: 520px;
+    background: url("assets/set2/shape_008.png") center/contain no-repeat; opacity: .7;
+  }
+  .features .head { position: relative; z-index: 1; text-align: center; }
+  .features .head .section-title, .features .head .section-sub { margin-left: auto; margin-right: auto; }
+  .feat-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 56px; }
+  .feat {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .feat:hover { transform: translateY(-3px); box-shadow: 0 24px 50px -28px rgba(31,42,35,.15); }
+  .feat .ic { width: 64px; height: 64px; margin-bottom: 18px; }
+  .feat h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+  .feat p { color: var(--ink-soft); font-size: 14px; }
+
+  /* ========== PERSONA ========== */
+  .persona { padding: 110px 0; }
+  .persona .head { text-align: center; margin-bottom: 56px; }
+  .persona .head .section-title, .persona .head .section-sub { margin-left: auto; margin-right: auto; }
+  .persona-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .persona-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .persona-card .ph { width: 80px; height: 80px; border-radius: 50%; background: var(--green-tint); margin-bottom: 16px; overflow: hidden; }
+  .persona-card .ph img { width: 100%; height: 100%; object-fit: cover; }
+  .persona-card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+  .persona-card p { color: var(--ink-soft); font-size: 14px; margin-bottom: 18px; }
+  .persona-card .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .persona-card .tags span { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--green-tint); color: var(--green-deep); }
+
+  /* ========== MONITOR ========== */
+  .monitor { padding: 100px 0; background: var(--green-deep); color: #fff; position: relative; overflow: hidden; }
+  .monitor::before {
+    content: ""; position: absolute; top: -100px; left: -100px; width: 420px; height: 420px;
+    background: url("assets/set2/shape_007.png") center/contain no-repeat; opacity: .35;
+  }
+  .monitor::after {
+    content: ""; position: absolute; bottom: -180px; right: -120px; width: 520px; height: 520px;
+    background: url("assets/set2/shape_003.png") center/contain no-repeat; opacity: .35;
+  }
+  .monitor .section-eyebrow { color: #b6e0c2; }
+  .monitor .section-title { color: #fff; }
+  .monitor .section-sub { color: rgba(255,255,255,.75); }
+  .monitor-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center; margin-top: 56px; }
+  .monitor-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 18px;
+    padding: 40px;
+    backdrop-filter: blur(8px);
+  }
+  .monitor-card .free-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+    border-radius: 999px; padding: 6px 16px;
+    font-size: 13px; font-weight: 700; color: #fff;
+    margin-bottom: 20px;
+  }
+  .monitor-card h3 { font-family: "Zen Kaku Gothic New"; font-size: 36px; font-weight: 900; line-height: 1.2; margin-bottom: 14px; }
+  .monitor-card h3 .hl { color: #7ee8a2; }
+  .monitor-card p { color: rgba(255,255,255,.8); font-size: 15px; margin-bottom: 28px; }
+  .monitor-card .btn-white { background: #fff; color: var(--green-deep); font-family: inherit; flex-direction: column; height: auto; padding: 12px 28px; gap: 2px; }
+  .monitor-card .btn-white .sub { font-size: 11px; color: var(--ink-mute); font-weight: 400; }
+  .monitor-visual { display: grid; gap: 18px; }
+  .monitor-stat {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .monitor-stat .ic { width: 44px; height: 44px; background-size: contain; background-position: center; background-repeat: no-repeat; flex: 0 0 44px; filter: brightness(0) invert(1); opacity: .8; }
+  .monitor-stat div b { display: block; font-family: "Zen Kaku Gothic New"; font-size: 26px; font-weight: 900; color: #7ee8a2; line-height: 1.1; }
+  .monitor-stat div span { font-size: 13px; color: rgba(255,255,255,.7); }
+
+  /* ========== FAQ ========== */
+  .faq { padding: 60px 0 100px; }
+  .faq-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 60px; margin-top: 32px; }
+  .faq details { border-top: 1px solid var(--line); padding: 22px 0; cursor: pointer; }
+  .faq details:last-child { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    font-weight: 700; font-size: 16px;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-family: "JetBrains Mono"; font-size: 22px; color: var(--green); transition: transform .2s ease; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq details p { color: var(--ink-soft); font-size: 14px; margin: 12px 0 0; }
+
+  /* ========== FINAL CTA ========== */
+  .final { padding: 100px 0 120px; position: relative; overflow: hidden; }
+  .final-card {
+    position: relative;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    padding: 80px 60px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .final-card::before {
+    content: ""; position: absolute; top: -100px; left: -60px; width: 360px; height: 360px;
+    background: url("assets/set2/shape_000.png") center/contain no-repeat; opacity: .85;
+  }
+  .final-card::after {
+    content: ""; position: absolute; bottom: -120px; right: -60px; width: 380px; height: 380px;
+    background: url("assets/set2/shape_004.png") center/contain no-repeat; opacity: .8;
+  }
+  .final-card .inner { position: relative; z-index: 1; }
+  .final-card h2 { font-size: clamp(32px, 4.6vw, 56px); font-weight: 900; margin-bottom: 18px; }
+  .final-card h2 .accent { color: var(--green); }
+  .final-card p { color: var(--ink-soft); font-size: 17px; max-width: 560px; margin: 0 auto 32px; }
+  .final-card .ctas { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .final-card .ctas .btn-primary { flex-direction: column; height: auto; padding: 12px 28px; gap: 2px; }
+  .final-card .ctas .btn-primary .sub { font-size: 11px; font-weight: 400; opacity: .85; }
+  .final-card .micro { font-size: 12px; color: var(--ink-mute); margin-top: 18px; }
+
+  /* ========== FOOTER ========== */
+  .foot { border-top: 1px solid var(--line); padding: 50px 0 30px; background: #fff; }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 30px; }
+  .foot h4 { font-size: 13px; font-weight: 700; margin-bottom: 14px; }
+  .foot ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 13px; color: var(--ink-soft); }
+  .foot ul a:hover { color: var(--green); }
+  .foot .copy { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-mute); display: flex; justify-content: space-between; }
+
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-visual { height: 460px; }
+    .pain-grid, .feat-grid, .persona-grid { grid-template-columns: 1fr; }
+    .about-inner { grid-template-columns: 1fr; }
+    .flow .steps { grid-template-columns: 1fr 1fr; }
+    .flow .steps::before { display: none; }
+    .monitor-inner { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="logo">
+      <span class="logo-mark"></span>
+      <span>BuddyFlow</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#about">BuddyFlowとは</a>
+      <a href="#features">できること</a>
+      <a href="#flow">ワークフロー</a>
+      <a href="#monitor">モニター募集</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <button class="btn btn-primary" style="flex-direction:column;height:auto;padding:8px 20px;gap:1px;">
+        <span>無料モニターに応募する</span>
+        <span style="font-size:10px;font-weight:400;opacity:.85;">XをフォローしてDM（@hitsuji__works）</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="blob1"></div>
+    <div class="blob2"></div>
+    <div class="dot1"></div>
+  </div>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>AI自動ブログ運用プラットフォーム</span>
+      <h1>
+        書かなくていい。<br>
+        それでも、<br>
+        <span class="accent">ブログは育つ。</span>
+      </h1>
+      <p class="lead">
+        BuddyFlowは、AIがあなたのブログ運営をまるごと支援する自動運用プラットフォームです。時間がなくても、知識がなくても、資産になるブログを。
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary">
+          <span>無料モニターに応募する</span>
+          <span class="sub">XをフォローしてDM（@hitsuji__works）</span>
+          <span class="arrow"></span>
+        </button>
+      </div>
+      <div class="hero-meta">
+        <span><span class="star">★</span>フィードバック提供と引き換えに、永久無料でご利用いただけます。</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="mock mock-1">
+        <div class="mock-head">
+          <span class="title">今月の記事一覧</span>
+          <span class="badge">AI生成中</span>
+        </div>
+        <div class="task-row"><span class="check-ic"></span>「副業で月5万円を達成する方法」<span class="tag-ai">完了</span></div>
+        <div class="task-row"><span class="check-ic"></span>「ポイ活で年間10万円を貯める手順」<span class="tag-ai">完了</span></div>
+        <div class="task-row"><span class="check-ic todo"></span>「初心者向け投資信託の始め方」<span class="tag-ai">執筆中</span></div>
+        <div class="task-row"><span class="check-ic todo"></span>「AI活用で仕事を効率化する7つの方法」<span class="tag-ai">待機</span></div>
+        <div class="task-row"><span class="check-ic todo"></span>「フリーランスの確定申告を完全解説」<span class="tag-ai">待機</span></div>
+      </div>
+      <div class="mock mock-2">
+        <div class="mock-head">
+          <span class="title">アクセス推移（今月）</span>
+          <span class="badge">+128%</span>
+        </div>
+        <div class="chart"></div>
+        <div class="legend">
+          <span>PV</span><span>UU</span><span>収益</span>
+        </div>
+      </div>
+      <div class="mock mock-3">
+        <div class="mock-head">
+          <span class="title">AI Buddy</span>
+          <span class="mono" style="font-size:10px;">自動稼働中</span>
+        </div>
+        <div class="buddy-msg">
+          <div class="buddy-label">Buddy より</div>
+          「新しい記事の下書きが完成しました。WordPress への入稿準備が整っています 🎉」
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="wrap">
+    <span class="section-eyebrow">— こんなお悩み、ありませんか？</span>
+    <h2 class="section-title">ブログを始めたいのに、<br>なかなか動き出せない。</h2>
+    <p class="section-sub">続けたいのに、気付けば止まっている。そんなあなたのために BuddyFlow はあります。</p>
+    <div class="pain-grid">
+      <div class="pain">
+        <span class="num">01</span>
+        <div class="scribble"></div>
+        <h3>時間がない</h3>
+        <p>本業や家事で忙しくて、ブログに時間をかけられない…</p>
+      </div>
+      <div class="pain">
+        <span class="num">02</span>
+        <div class="scribble"></div>
+        <h3>続かない</h3>
+        <p>書くのが大変で、続けるモチベーションが続かない…</p>
+      </div>
+      <div class="pain">
+        <span class="num">03</span>
+        <div class="scribble"></div>
+        <h3>何から始めるか</h3>
+        <p>何を書けばいいのか分からず、最初の一歩が踏み出せない…</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-inner">
+      <div class="about-text">
+        <span class="section-eyebrow">— BuddyFlowとは？</span>
+        <h2 class="section-title">AIがブログ運営の<br>全工程をサポート。</h2>
+        <p>AIがブログ運営の全工程をサポートする自動運用プラットフォームです。あなたは「テーマ」を入れるだけ。あとはAIが、読まれる記事をつくり、整え、育ててくれます。</p>
+      </div>
+      <div class="about-flow">
+        <div class="af-step">
+          <div class="ic ic-person"></div>
+          <h4>テーマを入力</h4>
+          <p>あなたが決めるのはここだけ</p>
+        </div>
+        <div class="af-arrow">→</div>
+        <div class="af-step highlight">
+          <div class="ic ic-buddy"></div>
+          <h4>BuddyFlow</h4>
+          <p>AIエンジン</p>
+        </div>
+        <div class="af-arrow">→</div>
+        <div class="af-step">
+          <div class="ic ic-blog"></div>
+          <h4>ブログが成長</h4>
+          <p>あとは任せるだけ</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="flow" id="flow">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <span class="section-eyebrow">— ワークフロー</span>
+        <h2 class="section-title">AIが実行する、<br><span style="color:var(--green);">5段階</span>ワークフロー。</h2>
+      </div>
+      <p class="section-sub">テーマを入れるだけで、AIが調査から入稿まで一気通貫で実行します。</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="num-ic"><img src="assets/set1/icon_025.png" alt=""></div>
+        <div class="step-num">STEP 1</div>
+        <h3>骨組み立案</h3>
+        <p class="step-sub">AI編集会議</p>
+        <p>検索意図・競合・構成を分析し、記事の設計図を作成します。</p>
+      </div>
+      <div class="step">
+        <div class="num-ic"><img src="assets/set1/icon_026.png" alt=""></div>
+        <div class="step-num">STEP 2</div>
+        <h3>見出しごと個別執筆</h3>
+        <p class="step-sub"></p>
+        <p>長い見出しをAIが個別に収集、情報を網羅的に生成します。</p>
+      </div>
+      <div class="step">
+        <div class="num-ic"><img src="assets/set1/icon_027.png" alt=""></div>
+        <div class="step-num">STEP 3</div>
+        <h3>結合</h3>
+        <p class="step-sub"></p>
+        <p>各パートをつなぎ、一つの記事として自然に結合します。</p>
+      </div>
+      <div class="step">
+        <div class="num-ic"><img src="assets/set1/icon_014.png" alt=""></div>
+        <div class="step-num">STEP 4</div>
+        <h3>校閲・トーン修正</h3>
+        <p class="step-sub"></p>
+        <p>誤字脱字のチェックや、読みやすさ・トーンを最適化します。</p>
+      </div>
+      <div class="step">
+        <div class="num-ic"><img src="assets/set1/icon_028.png" alt=""></div>
+        <div class="step-num">STEP 5</div>
+        <h3>装飾・WordPress入稿</h3>
+        <p class="step-sub"></p>
+        <p>装飾を施し、WordPressへ自動で入稿・公開準備まで行います。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES (できること) -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="head">
+      <span class="section-eyebrow">— できること</span>
+      <h2 class="section-title">BuddyFlowでできること</h2>
+      <p class="section-sub">新規立ち上げから既存ブログの改善まで、ブログ運営に必要なことをまるごとカバーします。</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat">
+        <img class="ic" src="assets/set1/icon_044.png" alt="">
+        <h3>新規ブログ立ち上げ</h3>
+        <p>ドメイン取得から初期設定、最適な設計までAIがサポート。ゼロからでもすぐに始められます。</p>
+      </div>
+      <div class="feat">
+        <img class="ic" src="assets/set1/icon_042.png" alt="">
+        <h3>既存WordPress対応</h3>
+        <p>すでにあるブログにも対応。記事の追加・改善を自動化し、収益化を加速させます。</p>
+      </div>
+      <div class="feat">
+        <img class="ic" src="assets/set1/icon_018.png" alt="">
+        <h3>記事メンテナンス</h3>
+        <p>記事の更新・リライト・削除判断までAIが定期的にチェック。ブログを常に最適な状態に保ちます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERSONA -->
+<section class="persona">
+  <div class="wrap">
+    <div class="head">
+      <span class="section-eyebrow">— こんな人に向いています</span>
+      <h2 class="section-title">こんな人に向いています</h2>
+      <p class="section-sub">業種・経験を問わず、ブログで資産を作りたいすべての人のために。</p>
+    </div>
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="ph"><img src="assets/set1/icon_031.png" alt=""></div>
+        <h3>会社員ブロガー</h3>
+        <p>本業が忙しくても、副業で資産になるブログを育てたい。自動化で時間効率を生み出したい人に。</p>
+        <div class="tags">
+          <span>副業収益化</span>
+          <span>時間効率化</span>
+          <span>資産形成</span>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="ph"><img src="assets/set1/icon_032.png" alt=""></div>
+        <h3>個人事業主・フリーランス</h3>
+        <p>集客のためにブログを活用したい。専門性を発信して、信頼と収益を両立させたい人に。</p>
+        <div class="tags">
+          <span>集客効率化</span>
+          <span>ブランディング</span>
+          <span>個人ブランド構築</span>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="ph"><img src="assets/set1/icon_030.png" alt=""></div>
+        <h3>ブログ初心者</h3>
+        <p>何から始めればいいか分からない…AIと一緒なら迷わず続けられる。</p>
+        <div class="tags">
+          <span>初心者OK</span>
+          <span>丸投げOK</span>
+          <span>安心サポート</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MONITOR -->
+<section class="monitor" id="monitor">
+  <div class="wrap">
+    <div style="position:relative;z-index:1;">
+      <span class="section-eyebrow">— 期間限定・先行案内</span>
+      <h2 class="section-title">無料モニター募集中！</h2>
+      <p class="section-sub">あなたのフィードバックが、BuddyFlowをもっと良くする力になります。</p>
+    </div>
+    <div class="monitor-inner">
+      <div class="monitor-card">
+        <div class="free-badge">
+          <span>🎁</span>
+          <span>フィードバック提供と引き換えに</span>
+        </div>
+        <h3><span class="hl">永久無料</span>で<br>ご利用いただけます。</h3>
+        <p>今すぐXをフォローしてDMを送るだけ。難しい手続きは一切ありません。</p>
+        <button class="btn btn-white" style="display:inline-flex;flex-direction:column;height:auto;padding:12px 28px;gap:2px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;border:0;font-family:inherit;align-items:center;">
+          <span>無料モニターに応募する</span>
+          <span class="sub" style="font-size:11px;color:var(--ink-mute);font-weight:400;">XをフォローしてDM（@hitsuji__works）</span>
+        </button>
+      </div>
+      <div class="monitor-visual">
+        <div class="monitor-stat">
+          <div class="ic" style="background-image:url('assets/set1/icon_036.png');"></div>
+          <div>
+            <b>∞</b>
+            <span>永久無料で利用可能</span>
+          </div>
+        </div>
+        <div class="monitor-stat">
+          <div class="ic" style="background-image:url('assets/set1/icon_041.png');"></div>
+          <div>
+            <b>+128%</b>
+            <span>モニター平均アクセス増加率</span>
+          </div>
+        </div>
+        <div class="monitor-stat">
+          <div class="ic" style="background-image:url('assets/set1/icon_010.png');"></div>
+          <div>
+            <b>5分</b>
+            <span>初回セットアップ時間</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="wrap faq-grid">
+    <div>
+      <span class="section-eyebrow">— よくあるご質問</span>
+      <h2 class="section-title">気になる、を先に。</h2>
+      <p class="section-sub" style="margin-top:14px;">ここに無いご質問は、XのDMからお気軽にどうぞ。</p>
+    </div>
+    <div>
+      <details open>
+        <summary>本当にAIにすべて任せて大丈夫ですか？</summary>
+        <p>はい。テーマを入力するだけで、調査・執筆・校閲・WordPress入稿までAIが自動で実行します。もちろん、公開前に内容を確認・編集することも可能です。</p>
+      </details>
+      <details>
+        <summary>どのくらいの頻度で記事が投稿されますか？</summary>
+        <p>設定した頻度に合わせて自動投稿します。週1本・週3本など、ご自身のペースに合わせて柔軟に調整できます。</p>
+      </details>
+      <details>
+        <summary>技術的な知識がなくても使えますか？</summary>
+        <p>はい、問題ありません。WordPressへの接続設定も、画面の案内に沿って進めるだけで完了します。プログラミング等の知識は一切不要です。</p>
+      </details>
+      <details>
+        <summary>自分で書いた記事も投稿できますか？</summary>
+        <p>もちろんです。AI生成記事と手書き記事を混在させることもできます。BuddyFlowは「完全自動」と「サポート自動」を使い分けられます。</p>
+      </details>
+      <details>
+        <summary>モニター期間や条件はありますか？</summary>
+        <p>モニター期間中はフィードバック（月1回程度のアンケート回答）をお願いしています。利用自体に費用は発生せず、フィードバックをご提供いただく限り永久無料でご利用いただけます。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="wrap">
+    <div class="final-card">
+      <div class="inner">
+        <h2>書かなくていい。それでも、<br><span class="accent">ブログは育つ。</span></h2>
+        <p>今すぐBuddyFlowの無料モニターに応募して、AIと一緒にブログを育てましょう。</p>
+        <div class="ctas">
+          <button class="btn btn-primary">
+            <span>無料モニターに応募する</span>
+            <span class="sub">XをフォローしてDM（@hitsuji__works）</span>
+            <span class="arrow"></span>
+          </button>
+        </div>
+        <p class="micro">永久無料 / フィードバック提供と引き換え / いつでも退会可</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="logo" style="margin-bottom:14px;">
+          <span class="logo-mark"></span>
+          <span>BuddyFlow</span>
+        </div>
+        <p style="font-size:13px; color: var(--ink-soft); max-width: 300px;">書かなくていい。それでも、ブログは育つ。BuddyFlowは、AIがあなたのブログ運営をまるごと支援する自動運用プラットフォームです。</p>
+      </div>
+      <div>
+        <h4>プロダクト</h4>
+        <ul>
+          <li><a href="#">機能一覧</a></li>
+          <li><a href="#">ワークフロー</a></li>
+          <li><a href="#">アップデート</a></li>
+          <li><a href="#">ロードマップ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>活用事例</h4>
+        <ul>
+          <li><a href="#">導入事例</a></li>
+          <li><a href="#">ブログ</a></li>
+          <li><a href="#">活用ガイド</a></li>
+          <li><a href="#">X（@hitsuji__works）</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>運営情報</h4>
+        <ul>
+          <li><a href="#">運営者情報</a></li>
+          <li><a href="#">お問い合わせ</a></li>
+          <li><a href="#">モニター応募</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>規約 / 法的事項</h4>
+        <ul>
+          <li><a href="#">利用規約</a></li>
+          <li><a href="#">プライバシー</a></li>
+          <li><a href="#">特商法表記</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© 2026 BuddyFlow</span>
+      <span class="mono">powered by AI</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
