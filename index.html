@@ -179,10 +179,11 @@
     padding: 24px 20px;
     min-width: 120px;
   }
-  .af-step .ic { width: 52px; height: 52px; margin: 0 auto 10px; background-size: contain; background-position: center; background-repeat: no-repeat; }
-  .af-step .ic-person { background-image: url("assets/set1/icon_025.png"); }
-  .af-step .ic-buddy { background-image: url("assets/set1/icon_022.png"); }
-  .af-step .ic-blog { background-image: url("assets/set1/icon_036.png"); }
+  .af-step .ic { width: 52px; height: 52px; margin: 0 auto 10px; background-size: contain; background-position: center; background-repeat: no-repeat; mix-blend-mode: multiply; }
+  .af-step.highlight .ic { mix-blend-mode: screen; filter: grayscale(1) contrast(20) invert(1); }
+  .af-step .ic-person { background-image: url("assets/about1.png"); }
+  .af-step .ic-buddy { background-image: url("assets/about2.png"); }
+  .af-step .ic-blog { background-image: url("assets/about3.png"); }
   .af-step h4 { font-size: 13px; font-weight: 700; }
   .af-step p { font-size: 11px; color: var(--ink-mute); margin: 4px 0 0; }
   .af-arrow { font-size: 22px; color: var(--green); margin: 0 12px; flex: 0 0 auto; }
@@ -241,8 +242,7 @@
     position: relative;
     overflow: hidden;
   }
-  .persona-card .ph { width: 80px; height: 80px; border-radius: 50%; background: var(--green-tint); margin-bottom: 16px; overflow: hidden; }
-  .persona-card .ph img { width: 100%; height: 100%; object-fit: cover; }
+  .persona-card .ph { width: 80px; height: 80px; border-radius: 50%; background: var(--green-tint); margin-bottom: 16px; overflow: hidden; display: grid; place-items: center; font-size: 42px; line-height: 1; }
   .persona-card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
   .persona-card p { color: var(--ink-soft); font-size: 14px; margin-bottom: 18px; }
   .persona-card .tags { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -420,10 +420,10 @@
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-cta">
-      <button class="btn btn-primary" style="flex-direction:column;height:auto;padding:8px 20px;gap:1px;">
+      <a href="https://x.com/hitsuji__works" target="_blank" class="btn btn-primary" style="flex-direction:column;height:auto;padding:8px 20px;gap:1px;">
         <span>無料モニターに応募する</span>
         <span style="font-size:10px;font-weight:400;opacity:.85;">XをフォローしてDM（@hitsuji__works）</span>
-      </button>
+      </a>
     </div>
   </div>
 </header>
@@ -447,11 +447,11 @@
         BuddyFlowは、AIがあなたのブログ運営をまるごと支援する自動運用プラットフォームです。時間がなくても、知識がなくても、資産になるブログを。
       </p>
       <div class="hero-cta">
-        <button class="btn btn-primary">
+        <a href="https://x.com/hitsuji__works" target="_blank" class="btn btn-primary">
           <span>無料モニターに応募する</span>
           <span class="sub">XをフォローしてDM（@hitsuji__works）</span>
           <span class="arrow"></span>
-        </button>
+        </a>
       </div>
       <div class="hero-meta">
         <span><span class="star">★</span>フィードバック提供と引き換えに、永久無料でご利用いただけます。</span>
@@ -644,7 +644,7 @@
     </div>
     <div class="persona-grid">
       <div class="persona-card">
-        <div class="ph"><img src="assets/set1/icon_031.png" alt=""></div>
+        <div class="ph">🐻</div>
         <h3>会社員ブロガー</h3>
         <p>本業が忙しくても、副業で資産になるブログを育てたい。自動化で時間効率を生み出したい人に。</p>
         <div class="tags">
@@ -654,7 +654,7 @@
         </div>
       </div>
       <div class="persona-card">
-        <div class="ph"><img src="assets/set1/icon_032.png" alt=""></div>
+        <div class="ph">🦊</div>
         <h3>個人事業主・フリーランス</h3>
         <p>集客のためにブログを活用したい。専門性を発信して、信頼と収益を両立させたい人に。</p>
         <div class="tags">
@@ -664,7 +664,7 @@
         </div>
       </div>
       <div class="persona-card">
-        <div class="ph"><img src="assets/set1/icon_030.png" alt=""></div>
+        <div class="ph">🐥</div>
         <h3>ブログ初心者</h3>
         <p>何から始めればいいか分からない…AIと一緒なら迷わず続けられる。</p>
         <div class="tags">
@@ -693,10 +693,10 @@
         </div>
         <h3><span class="hl">永久無料</span>で<br>ご利用いただけます。</h3>
         <p>今すぐXをフォローしてDMを送るだけ。難しい手続きは一切ありません。</p>
-        <button class="btn btn-white" style="display:inline-flex;flex-direction:column;height:auto;padding:12px 28px;gap:2px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;border:0;font-family:inherit;align-items:center;">
+        <a href="https://x.com/hitsuji__works" target="_blank" style="display:inline-flex;flex-direction:column;height:auto;padding:12px 28px;gap:2px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;background:#fff;color:var(--green-deep);font-family:inherit;align-items:center;text-decoration:none;">
           <span>無料モニターに応募する</span>
-          <span class="sub" style="font-size:11px;color:var(--ink-mute);font-weight:400;">XをフォローしてDM（@hitsuji__works）</span>
-        </button>
+          <span style="font-size:11px;color:var(--ink-mute);font-weight:400;">XをフォローしてDM（@hitsuji__works）</span>
+        </a>
       </div>
       <div class="monitor-visual">
         <div class="monitor-stat">
@@ -766,11 +766,11 @@
         <h2>書かなくていい。それでも、<br><span class="accent">ブログは育つ。</span></h2>
         <p>今すぐBuddyFlowの無料モニターに応募して、AIと一緒にブログを育てましょう。</p>
         <div class="ctas">
-          <button class="btn btn-primary">
+          <a href="https://x.com/hitsuji__works" target="_blank" class="btn btn-primary">
             <span>無料モニターに応募する</span>
             <span class="sub">XをフォローしてDM（@hitsuji__works）</span>
             <span class="arrow"></span>
-          </button>
+          </a>
         </div>
         <p class="micro">永久無料 / フィードバック提供と引き換え / いつでも退会可</p>
       </div>
@@ -801,10 +801,9 @@
       <div>
         <h4>活用事例</h4>
         <ul>
-          <li><a href="#">導入事例</a></li>
-          <li><a href="#">ブログ</a></li>
-          <li><a href="#">活用ガイド</a></li>
-          <li><a href="#">X（@hitsuji__works）</a></li>
+          <li><span style="color:var(--ink-mute);">導入事例（準備中）</span></li>
+          <li><span style="color:var(--ink-mute);">活用ガイド（準備中）</span></li>
+          <li><a href="https://x.com/hitsuji__works" target="_blank">X（@hitsuji__works）</a></li>
         </ul>
       </div>
       <div>
