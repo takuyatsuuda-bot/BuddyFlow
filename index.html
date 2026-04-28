@@ -343,16 +343,48 @@
   .foot .copy { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--ink-mute); display: flex; justify-content: space-between; }
 
   @media (max-width: 960px) {
+    /* NAV */
+    .nav-links { display: none; }
+    .nav-cta .btn { display: none; }
+    .nav-cta::after {
+      content: "応募する";
+      display: inline-flex; align-items: center;
+      height: 38px; padding: 0 16px;
+      border-radius: 999px;
+      background: var(--green); color: #fff;
+      font-weight: 700; font-size: 13px;
+      font-family: "Noto Sans JP", sans-serif;
+    }
+
+    /* HERO */
     .hero-grid { grid-template-columns: 1fr; }
-    .hero-visual { height: 460px; }
-    .pain-grid, .feat-grid, .persona-grid { grid-template-columns: 1fr; }
-    .about-inner { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .hero { padding: 40px 0 60px; }
+
+    /* ABOUT */
+    .about-inner { grid-template-columns: 1fr; gap: 40px; }
+    .about-flow { flex-direction: column; gap: 12px; }
+    .af-arrow { transform: rotate(90deg); }
+    .af-step { min-width: unset; width: 100%; }
+
+    /* FLOW */
     .flow .steps { grid-template-columns: 1fr 1fr; }
     .flow .steps::before { display: none; }
+
+    /* CARDS */
+    .pain-grid, .feat-grid, .persona-grid { grid-template-columns: 1fr; }
+
+    /* MONITOR */
     .monitor-inner { grid-template-columns: 1fr; }
+
+    /* FAQ */
     .faq-grid { grid-template-columns: 1fr; }
+
+    /* FOOTER */
     .foot-grid { grid-template-columns: 1fr 1fr; }
-    .nav-links { display: none; }
+
+    /* FINAL */
+    .final-card { padding: 50px 28px; }
   }
 </style>
 </head>
